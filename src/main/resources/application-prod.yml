@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/TEST"
+    url-option: "?serverTimezone=UTC&useLegacyDatetimeCode=false&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true"
+    username: "TEST"
+    password: "test1234@"
+  flyway:
+    enabled: false
