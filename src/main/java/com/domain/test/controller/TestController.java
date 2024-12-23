@@ -5,19 +5,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RestController(value = "/test")
+@RestController
+@RequestMapping("/api")
 public class TestController {
 
     private final TestService testService;
 
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping(value = "/run")
     public ResponseEntity<Void> roadTest() {
-        testService.loadDate();
+        testService.run();
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
