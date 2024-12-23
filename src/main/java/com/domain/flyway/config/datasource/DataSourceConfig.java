@@ -18,15 +18,8 @@ public class DataSourceConfig {
     private static List<String> urls = List.of("jdbc:mysql://localhost:3306/TEST",
         "jdbc:mysql://localhost:3306/TEST_00002", "jdbc:mysql://localhost:3306/TEST_00001");
 
-    @PostConstruct
-    public void migrate() throws ClassNotFoundException {
-        migrateDefaultSchema();
+    public void migrate() {
         migrateHospitalSchemas();
-    }
-
-    private void migrateDefaultSchema() {
-//        final String schemaName = "TEST";
-//        migrateSchema(schemaName);
     }
 
     private void migrateHospitalSchemas() {
@@ -40,8 +33,8 @@ public class DataSourceConfig {
         // jdbc 연결
         DataSource dataSource = new DriverManagerDataSource(
             url + "?serverTimezone=UTC&useLegacyDatetimeCode=false&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true",
-            "TEST",
-            "ikoobdev1@"
+            "test",
+            "test"
         );
 
         // hikari cp 연결
