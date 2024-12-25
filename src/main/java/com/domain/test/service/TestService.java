@@ -19,7 +19,7 @@ public class TestService {
 
     // 적용하려는 대상과 불러진 데이터와 비교합니다.
     public void checkSchema() {
-
+        System.out.println(urls.size());
     }
 
     // flyway를 실행
