@@ -1,0 +1,1 @@
+alter table test add column gender char null comment '성별';
