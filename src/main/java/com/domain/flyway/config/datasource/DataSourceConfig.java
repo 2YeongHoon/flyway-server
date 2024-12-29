@@ -1,6 +1,5 @@
 package com.domain.flyway.config.datasource;
 
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
