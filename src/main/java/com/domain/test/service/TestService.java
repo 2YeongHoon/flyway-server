@@ -21,7 +21,7 @@ public class TestService {
     // 적용하려는 대상과 불러진 데이터와 비교합니다.
     public void checkSchema() {
         for(String url : urls){
-            reportFlyway(url);
+            reportFlyway(null, url);
         }
     }
 
@@ -31,8 +31,9 @@ public class TestService {
         config.migrate();
     }
 
-    public void reportFlyway(String url) {
-        String query = "SELECT description, success FROM flyway_schema_history";
+    public void reportFlyway(String data, String url) {
+        final String query = "SELECT installed_rank, description, success FROM flyway_schema_history";
+        final int errCount = 0;
 
         try (Connection connection = DriverManager.getConnection(url, "root", "test");
             PreparedStatement statement = connection.prepareStatement(query);
@@ -43,10 +44,11 @@ public class TestService {
 
             // 조회 결과 출력
             while (resultSet.next()) {
-                String description = resultSet.getString("description");
-                String success = resultSet.getString("success");
+                final long installedRank = resultSet.getLong("installed_rank");
+                final String description = resultSet.getString("description");
+                final String success = resultSet.getString("success");
 
-                System.out.printf("description: %s, success: %s%n", description, success);
+                System.out.printf("id: %d, description: %s, success: %s%n", installedRank, description, success);
             }
         } catch (SQLException e) {
             // 예외 처리
