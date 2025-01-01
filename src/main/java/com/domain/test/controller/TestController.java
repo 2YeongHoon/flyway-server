@@ -1,6 +1,8 @@
 package com.domain.test.controller;
 
 import com.domain.test.service.TestService;
+import com.domain.test.service.vo.ResultVo;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,13 @@ public class TestController {
     public ResponseEntity<Void> check() {
         testService.checkSchema();
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/check-default")
+    public ResponseEntity<Map<String, ResultVo>> checkDefault() {
+        return ResponseEntity.ok(
+            testService.getDefaultSchemaStatus());
     }
 
 }
