@@ -1,7 +1,7 @@
-package com.domain.test.service;
+package com.domain.flyway.service;
 
 import com.domain.flyway.config.datasource.DataSourceConfig;
-import com.domain.test.service.vo.ResultVo;
+import com.domain.flyway.service.vo.ResultVo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class TestService {
+public class FlywayService {
 
     private final DataSourceConfig config;
     private static String baseUrl = "jdbc:mysql://localhost:3306/TEST";
@@ -31,10 +31,16 @@ public class TestService {
         }
     }
 
+    public void road() {
+        // TODO: ulrs를 초기화 한다.
+    }
+
     // flyway를 실행
     // 결과 report를 반환합니다.
-    public void run() {
-        config.migrate();
+    public void migrate() {
+        if (urls.size() != 0) {
+            config.migrate(urls);
+        }
     }
 
     public Map<String, ResultVo> getDefaultSchemaStatus() {
@@ -45,11 +51,11 @@ public class TestService {
     private Map<String, ResultVo> baseData(String url) {
         final String query = "SELECT installed_rank, description, success FROM flyway_schema_history";
 
-        try (Connection connection = DriverManager.getConnection(url, "root", "ikoobdev1@");
+        try (Connection connection = DriverManager.getConnection(url, "root", "test");
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery()) {
 
-            System.out.println("Connected to: " + url);
+            System.out.println("%nConnected to: " + url);
             System.out.println("Query Results:");
 
             Map<String, ResultVo> ddd = new HashMap<>();
@@ -60,7 +66,7 @@ public class TestService {
                 final String success = resultSet.getString("success");
 
                 System.out.printf("id: %s, description: %s, success: %s%n", installedRank, description, success);
-                ddd.put(installedRank, new ResultVo(description, success));
+                ddd.put(description, new ResultVo(description, success));
             }
             return ddd;
 
@@ -90,7 +96,9 @@ public class TestService {
                 final String description = resultSet.getString("description");
                 final String success = resultSet.getString("success");
 
-                System.out.printf("id: %d, description: %s, success: %s%n", installedRank, description, success);
+                if (baseSchema.get(description) == null || "0".equals(success)) {
+                    System.out.printf("fail id: %d, description: %s, %n", installedRank, description);
+                }
             }
         } catch (SQLException e) {
             // 예외 처리
