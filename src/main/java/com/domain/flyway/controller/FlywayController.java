@@ -1,7 +1,7 @@
-package com.domain.test.controller;
+package com.domain.flyway.controller;
 
-import com.domain.test.service.TestService;
-import com.domain.test.service.vo.ResultVo;
+import com.domain.flyway.service.FlywayService;
+import com.domain.flyway.service.vo.ResultVo;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,21 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class TestController {
+public class FlywayController {
 
-    private final TestService testService;
+    private final FlywayService flywayService;
 
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping(value = "/run")
-    public ResponseEntity<Void> roadTest() {
-        testService.run();
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @GetMapping(value = "/migrate")
+    public ResponseEntity<Void> migrate() {
+        flywayService.migrate();
+        return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PostMapping(value = "/road")
+    public ResponseEntity<Void> road() {
+        flywayService.road();
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @GetMapping(value = "/check")
     public ResponseEntity<Void> check() {
-        testService.checkSchema();
+        flywayService.checkSchema();
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -37,7 +44,7 @@ public class TestController {
     @GetMapping(value = "/check-default")
     public ResponseEntity<Map<String, ResultVo>> checkDefault() {
         return ResponseEntity.ok(
-            testService.getDefaultSchemaStatus());
+            flywayService.getDefaultSchemaStatus());
     }
 
 }
