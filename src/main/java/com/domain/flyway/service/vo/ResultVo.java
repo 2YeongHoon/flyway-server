@@ -1,4 +1,4 @@
-package com.domain.test.service.vo;
+package com.domain.flyway.service.vo;
 
 import lombok.Getter;
 
